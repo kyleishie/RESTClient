@@ -19,8 +19,10 @@ public protocol CodableEncoder {
 /// The existing encoders provided by Foundation do not explicitly conforms to CodableEncoder,
 /// but they do implement CodableEncoder's requirements.
 extension JSONEncoder : CodableEncoder {}
-extension PropertyListEncoder : CodableEncoder {}
 
+#if os(macOS)
+extension PropertyListEncoder : CodableEncoder {}
+#endif
 
 /**
  Provide a common interface for decoders.
@@ -34,4 +36,7 @@ public protocol CodableDecoder {
 /// The existing decoders provided by Foundation do not explicitly conforms to CodableDecoder,
 /// but they do implement CodableDecoder's requirements.
 extension JSONDecoder : CodableDecoder {}
+
+#if os(macOS)
 extension PropertyListDecoder : CodableDecoder {}
+#endif
