@@ -14,7 +14,10 @@ public struct FormURLEnoder : CodableEncoder {
     public func encode<T>(_ value: T) throws -> Data where T : Encodable {
         
         let jsonEncoder = JSONEncoder()
+        #if os(macOS)
         jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
+        #endif
+        
         jsonEncoder.dateEncodingStrategy = .secondsSince1970
         let jsonData = try jsonEncoder.encode(value)
         
