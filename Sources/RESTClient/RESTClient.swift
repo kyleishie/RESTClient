@@ -10,7 +10,9 @@ import Dispatch
 
 open class RESTClient<Error> where Error : Swift.Error & Decodable {
     
-    open let baseURL : URL
+    public let baseURL : URL
+    
+    public var isLoggingEnabled : Bool = false
     
     private(set) var session : URLSession
         

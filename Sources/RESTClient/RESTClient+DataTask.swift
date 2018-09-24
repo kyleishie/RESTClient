@@ -42,6 +42,10 @@ extension RESTClient {
         var request = request
         transformers.forEach({ $0.tranform(&request) })
         
+        if isLoggingEnabled {
+            print("REQUEST", request, request.allHTTPHeaderFields, session.configuration.httpAdditionalHeaders, request.httpBody)
+        }
+        
         return session.dataTask(with: request) { [decoders] (data, response, error) in
             
             guard let response = response as? HTTPURLResponse else {
