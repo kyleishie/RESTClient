@@ -12,7 +12,7 @@ public extension URLSessionConfiguration {
     
     public static var restJSONAPI : URLSessionConfiguration {
         
-        let sessionConfig = URLSessionConfiguration.ephemeral
+        let sessionConfig = URLSessionConfiguration.default
         sessionConfig.allowsCellularAccess = true
         sessionConfig.httpAdditionalHeaders = [
             "Content-Type" : "application/json",
@@ -25,7 +25,7 @@ public extension URLSessionConfiguration {
     }
     
     public static func authenticatedRESTJSONApi(withBearer token: String) -> URLSessionConfiguration {
-        let sessionConfig = URLSessionConfiguration.ephemeral
+        let sessionConfig = URLSessionConfiguration.default
         sessionConfig.allowsCellularAccess = true
         
         sessionConfig.httpAdditionalHeaders = [
