@@ -44,6 +44,10 @@ extension RESTClient {
         
         if isLoggingEnabled {
             print("REQUEST", request, request.allHTTPHeaderFields, session.configuration.httpAdditionalHeaders, request.httpBody)
+            
+            if let body = request.httpBody {
+                print(String(data: body, encoding: .utf8))
+            }
         }
         
         return session.dataTask(with: request) { [decoders] (data, response, error) in
