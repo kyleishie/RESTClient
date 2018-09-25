@@ -42,13 +42,6 @@ extension RESTClient {
         var request = originalRequest
         transformers.forEach({ $0.tranform(&request) })
         
-        session.configuration.httpAdditionalHeaders?.forEach({ key, value in
-            if let keyString = key as? String, let valueString = value as? String {
-                request.setValue(valueString, forHTTPHeaderField: keyString)
-            }
-        })
-        
-        
         if isLoggingEnabled {
             print("REQUEST")
             print("method: ", request.httpMethod ?? "Unknown")
