@@ -48,6 +48,8 @@ extension RESTClient {
             }
         })
         
+        request.httpBody = originalRequest.httpBody
+        
         if isLoggingEnabled {
             print("")
             print("headers from session: ", session.configuration.httpAdditionalHeaders ?? "none")
@@ -74,6 +76,7 @@ extension RESTClient {
                 print("Decoded Body", String(data: body, encoding: .utf8) ?? "Could not decode to String")
             }
         }
+        
         
         var task : URLSessionDataTask? = nil
         task = session.dataTask(with: request) { [decoders, weak self] (data, response, error) in
