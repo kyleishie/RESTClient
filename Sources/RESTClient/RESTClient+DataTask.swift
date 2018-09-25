@@ -37,9 +37,9 @@ extension RESTClient {
      
      This method allows for the poosibility of a nil response body when the request is successful, however, additional unwrapping is required.
      */
-    open func dataTask<T : Decodable & ExpressibleByNilLiteral>(_ type: T.Type, with request: URLRequest, completionHandler: ((Result<T, Error>) -> Void)? = nil) -> URLSessionDataTask {
+    open func dataTask<T : Decodable & ExpressibleByNilLiteral>(_ type: T.Type, with originalRequest: URLRequest, completionHandler: ((Result<T, Error>) -> Void)? = nil) -> URLSessionDataTask {
         
-        var request = request
+        var request = originalRequest
         transformers.forEach({ $0.tranform(&request) })
         
         session.configuration.httpAdditionalHeaders?.forEach({ key, value in
