@@ -43,7 +43,19 @@ extension RESTClient {
         transformers.forEach({ $0.tranform(&request) })
         
         if isLoggingEnabled {
-            print("REQUEST")
+            print("ORIGINAL REQUEST")
+            print("method: ", originalRequest.httpMethod ?? "Unknown")
+            print("uri: ", originalRequest)
+            print("headers: ", originalRequest.allHTTPHeaderFields ?? "none")
+            print("headers from session: ", session.configuration.httpAdditionalHeaders ?? "none")
+            print("body", originalRequest.httpBody ?? "none")
+            
+            if let body = originalRequest.httpBody {
+                print("Decoded Body", String(data: body, encoding: .utf8) ?? "Could not decode to String")
+            }
+            
+            print("/n")
+            print("MODIFIED REQUEST")
             print("method: ", request.httpMethod ?? "Unknown")
             print("uri: ", request)
             print("headers: ", request.allHTTPHeaderFields ?? "none")
