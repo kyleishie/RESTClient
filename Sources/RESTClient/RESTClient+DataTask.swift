@@ -42,7 +42,11 @@ extension RESTClient {
         var request = request
         transformers.forEach({ $0.tranform(&request) })
         
-
+        session.configuration.httpAdditionalHeaders?.forEach({ key, value in
+            if let keyString = key as? String, let valueString = value as? String {
+                request.addValue(valueString, forHTTPHeaderField: keyString)
+            }
+        })
         
         let task = session.dataTask(with: request) { [decoders] (data, response, error) in
             
