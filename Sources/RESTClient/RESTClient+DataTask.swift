@@ -54,7 +54,7 @@ extension RESTClient {
                 print("Decoded Body", String(data: body, encoding: .utf8) ?? "Could not decode to String")
             }
             
-            print("/n")
+            print("")
             print("MODIFIED REQUEST")
             print("method: ", request.httpMethod ?? "Unknown")
             print("uri: ", request)
@@ -67,7 +67,7 @@ extension RESTClient {
             }
         }
         
-        return session.dataTask(with: request) { [decoders] (data, response, error) in
+        let task = session.dataTask(with: request) { [decoders] (data, response, error) in
             
             guard let response = response as? HTTPURLResponse else {
                 completionHandler?(.systemFailure(error!))
@@ -114,6 +114,32 @@ extension RESTClient {
                 
             }
         }
+        
+        if isLoggingEnabled {
+            print("ORIGINAL REQUEST from TASK")
+            print("method: ", task.originalRequest?.httpMethod ?? "Unknown")
+            print("uri: ", task.originalRequest ?? "none")
+            print("headers: ", task.originalRequest?.allHTTPHeaderFields ?? "none")
+            print("body", task.originalRequest?.httpBody ?? "none")
+            
+            if let body = task.originalRequest?.httpBody {
+                print("Decoded Body", String(data: body, encoding: .utf8) ?? "Could not decode to String")
+            }
+            
+            print("")
+            print("MODIFIED REQUEST from TASK")
+            print("method: ", task.currentRequest?.httpMethod ?? "Unknown")
+            print("uri: ", task.currentRequest ?? "none")
+            print("headers: ", task.currentRequest?.allHTTPHeaderFields ?? "none")
+            print("headers from session: ", session.configuration.httpAdditionalHeaders ?? "none")
+            print("body", task.currentRequest?.httpBody ?? "none")
+            
+            if let body = task.currentRequest?.httpBody {
+                print("Decoded Body", String(data: body, encoding: .utf8) ?? "Could not decode to String")
+            }
+        }
+        
+        return task
     }
     
     /**
