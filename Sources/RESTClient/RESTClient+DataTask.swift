@@ -42,11 +42,12 @@ extension RESTClient {
         var request = request
         transformers.forEach({ $0.tranform(&request) })
         
-//        session.configuration.httpAdditionalHeaders?.forEach({ key, value in
-//            if let keyString = key as? String, let valueString = value as? String {
-//                request.addValue(valueString, forHTTPHeaderField: keyString)
-//            }
-//        })
+        session.configuration.httpAdditionalHeaders?.forEach({ key, value in
+            if let keyString = key as? String, let valueString = value as? String {
+                request.setValue(valueString, forHTTPHeaderField: keyString)
+            }
+        })
+        
         
         if isLoggingEnabled {
             print("REQUEST")
