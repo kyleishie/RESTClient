@@ -42,6 +42,12 @@ extension RESTClient {
         var request = originalRequest
         transformers.forEach({ $0.tranform(&request) })
         
+        session.configuration.httpAdditionalHeaders?.forEach({ k, v in
+            if let key = k as? String, let value = v as? String {
+                request.setValue(value, forHTTPHeaderField: key)
+            }
+        })
+        
         if isLoggingEnabled {
             print("")
             print("headers from session: ", session.configuration.httpAdditionalHeaders ?? "none")
@@ -94,6 +100,7 @@ extension RESTClient {
                 if let body = task.currentRequest?.httpBody {
                     print("Decoded Body", String(data: body, encoding: .utf8) ?? "Could not decode to String")
                 }
+                print("")
             }
             
             
