@@ -42,13 +42,26 @@ extension RESTClient {
         var request = request
         transformers.forEach({ $0.tranform(&request) })
         
-        session.configuration.httpAdditionalHeaders?.forEach({ key, value in
-            if let keyString = key as? String, let valueString = value as? String {
-                request.addValue(valueString, forHTTPHeaderField: keyString)
-            }
-        })
+//        session.configuration.httpAdditionalHeaders?.forEach({ key, value in
+//            if let keyString = key as? String, let valueString = value as? String {
+//                request.addValue(valueString, forHTTPHeaderField: keyString)
+//            }
+//        })
         
-        let task = session.dataTask(with: request) { [decoders] (data, response, error) in
+        if isLoggingEnabled {
+            print("REQUEST")
+            print("method: ", request.httpMethod ?? "Unknown")
+            print("uri: ", request)
+            print("headers: ", request.allHTTPHeaderFields ?? "none")
+            print("headers from session: ", session.configuration.httpAdditionalHeaders ?? "none")
+            print("body", request.httpBody ?? "none")
+            
+            if let body = request.httpBody {
+                print("Decoded Body", String(data: body, encoding: .utf8) ?? "Could not decode to String")
+            }
+        }
+        
+        return session.dataTask(with: request) { [decoders] (data, response, error) in
             
             guard let response = response as? HTTPURLResponse else {
                 completionHandler?(.systemFailure(error!))
@@ -95,21 +108,6 @@ extension RESTClient {
                 
             }
         }
-        
-        if isLoggingEnabled {
-            print("REQUEST")
-            print("method: ", request.httpMethod ?? "Unknown")
-            print("uri: ", request)
-            print("headers: ", request.allHTTPHeaderFields ?? "none")
-            print("headers from session: ", session.configuration.httpAdditionalHeaders ?? "none")
-            print("body", request.httpBody ?? "none")
-            
-            if let body = request.httpBody {
-                print("Decoded Body", String(data: body, encoding: .utf8) ?? "Could not decode to String")
-            }
-        }
-        
-        return task
     }
     
     /**
